@@ -22,22 +22,22 @@ encoders = joblib.load('encoders.pkl')
 # Formulaire d'entrée
 with st.sidebar:
     st.header("Mes Informations")
-    heures_etude = st.slider("Heures d'étude quotidiennes", 0, 10, 4)
-    presence = st.slider("Taux de présence (%)", 0, 100, 80)
-    sommeil = st.slider("Heures de sommeil", 4, 12, 8)
-    qualite_sommeil = st.selectbox("Qualité du sommeil", ["Good", "Average", "Poor"])
-    diff_examen = st.selectbox("Difficulté de l'examen", ["Low", "Medium", "High"])
+    study_hours = st.slider("Heures d'étude quotidiennes", 0, 10, 4)
+    class_attendance = st.slider("Taux de présence (%)", 0, 100, 80)
+    sleep_hours = st.slider("Heures de sommeil", 4, 12, 8)
+    sleep_quality = st.selectbox("Qualité du sommeil", ["Good", "Average", "Poor"])
+    exam_difficulty = st.selectbox("Difficulté de l'examen", ["Low", "Medium", "High"])
     # Ajoutez ici les autres variables selon votre dataset
 
 # Bouton de prédiction
 if st.button("Analyser mon profil"):
     # Préparation des données (on crée un DataFrame avec les noms de colonnes exacts du CSV)
     data = {
-        'Hours_Studied': [heures_etude],
-        'Attendance': [presence],
-        'Sleep_Hours': [sommeil],
-        'Sleep_Quality': [qualite_sommeil],
-        'Exam_Difficulty': [diff_examen]
+        'Hours_Studied': [study_hours],
+        'Attendance': [class_attendance],
+        'Sleep_Hours': [sleep_hours],
+        'Sleep_Quality': [sleep_quality],
+        'Exam_Difficulty': [exam_difficulty]
     }
     df_input = pd.DataFrame(data)
 
@@ -57,11 +57,11 @@ if st.button("Analyser mon profil"):
     col1, col2 = st.columns(2)
 
     with col1:
-        if presence < 85:
+        if class_attendance < 85:
             st.warning("**Assiduité :** Votre taux de présence est faible. Augmenter votre présence de 10% pourrait booster votre note.")
-        if heures_etude < 5:
+        if study_hours < 5:
             st.info("**Travail :** La moyenne des étudiants qui réussissent étudient plus de 5h par jour.")
 
     with col2:
-        if sommeil < 7:
+        if sleep_hours < 7:
             st.error("**Sommeil :** Le manque de sommeil nuit à la mémorisation. Visez 8h pour stabiliser votre score.")
